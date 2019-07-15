@@ -15,7 +15,7 @@
 #include "ExternalCommands.h"
 
 Scheduler scheduler;
-SerialTransport transport(Serial);
+SerialTransport transport(Serial); 
 
 const int NUM_OF_SENSES = 7;
 //Presence s(5,"pres",&transport);
