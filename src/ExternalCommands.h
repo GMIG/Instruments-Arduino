@@ -8,7 +8,7 @@
 #include <ITransport.h>
 #include <Sense.h>
 
-
+#define MAX_SYNTAX 5
 //#include "SerialDebug.h"
 
 void ExternalCommandsCallback();
@@ -21,34 +21,71 @@ private:
     Task taskGetData;
     ITransport* transport;
     bool hasDataToSendvar = false;
-    PointerStorage<Sense> senses;
+    PointerStorage<Commandable> senses;
+    
+    const char syntax[MAX_SYNTAX]={'[',']','.','(',')'};
 
 protected:
     int getDataString( char* result){ 
+
         return readTransport( result);
     }
     bool hasDataToSend(){
         return transport->available() > 0;
     }
     SETUPCOMMAND(runall,ExternalCommands);
+    SETUPCOMMAND(stopall,ExternalCommands);
+    SETUPARGCOMMAND(getObj,ExternalCommands);
+    SETUPCOMMAND(getNumObj,ExternalCommands);
+
 
 public:
-    ExternalCommands(const char * name,ITransport* _transport, Sense** _senses, const int numOfSenses): 
+    ExternalCommands(const char * name,ITransport* _transport, Commandable** _senses, const int numOfSenses): 
                                                                 Sense(_transport, name),
                                                                 //taskGetData(20, TASK_FOREVER, &ExternalCommandsCallback, &scheduler, true),
                                                                 transport(_transport),
-                                                                runallCommand(*this){
-        commands.addPointer(&runallCommand);
+                                                                INITCOMMAND(runall),
+                                                                INITCOMMAND(stopall),
+                                                                INITCOMMAND(getObj),
+                                                                INITCOMMAND(getNumObj)
+                                                                {
+        ADDCOMMAND(runall);
+        ADDCOMMAND(stopall);
+        ADDCOMMAND(getObj);
+        ADDCOMMAND(getNumObj);
 
-         for(int i = 0;i < numOfSenses;i++)
+        for(int i = 0;i < numOfSenses;i++)
             senses.addPointer(_senses[i]);
         senses.addPointer(this);
         //taskGetData.setLtsPointer(this);
     }
     
+    int getNumObj (char * result){
+        sprintf(result, "%d", senses.getSize());
+    }
+
     int runall(char * result){
         for (int i = 0; i < senses.getSize() ;i++) {
-            senses.getPointer(i)->start("");
+            char a[1];char r[1];
+            senses.getPointer(i)->decodeCommand("start", a,r);
+        }
+        return 0;
+    }
+
+    int getObj(const char * arg,char * result){
+        char *err;
+        unsigned int d = strtoul(arg, &err, 10);
+        if (*err != 0 ) 
+            return 1; 
+        strlcat(result,senses.getPointer(d)->namec(),MAX_SENSE_RESULT);
+        return 0;
+    }
+
+
+    int stopall(char * result){
+        for (int i = 0; i < senses.getSize() ;i++) {
+            char a[1];char r[1];
+            senses.getPointer(i)->decodeCommand("stop", a,r);
         }
         return 0;
     }

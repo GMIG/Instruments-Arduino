@@ -10,6 +10,7 @@
 #include "Rotation.h"
 #include "Debug.h"
 #include "Button.h"
+#include "GPIOSwitch.h"
 
 #include "SerialTransport.h"
 #include "ExternalCommands.h"
@@ -17,7 +18,7 @@
 Scheduler scheduler;
 SerialTransport transport(Serial); 
 
-const int NUM_OF_SENSES = 7;
+const int NUM_OF_SENSES = 8;
 //Presence s(5,"pres",&transport);
 //Presence s2(2,"pres2",&transport);
 //Presence s3(3,"pres3",&transport);
@@ -33,7 +34,15 @@ Button but2(10,"but2",&transport);
 Button but3(10,"but3",&transport);
 Button but4(11,"but4",&transport);
 
-Sense* senses[NUM_OF_SENSES] = {&joy,&rot,&ang,&but,&but2,&but3,&but4};//,&r,&r3,&r4,&b2,&b3,&s,&r}; 
+GPIOName GPIOS[] = {
+  {O0,"red"},
+  {O1,"rel"},
+  {O2,"grn"}
+};
+
+GPIOSwitch gpio("outs",GPIOS,3);
+
+Commandable* senses[NUM_OF_SENSES] = {&joy,&rot,&ang,&but,&but2,&but3,&but4,&gpio};//,&r,&r3,&r4,&b2,&b3,&s,&r}; 
 
 //Sense* senses[2] = {&r3,&r}; 
 
@@ -41,7 +50,7 @@ ExternalCommands disp("cmd",&transport,senses,NUM_OF_SENSES);
 
 void setup() {
   //debugSetLevel(5);
-  Serial.begin(9600);
+  Serial.begin(57600);
     char buf[1] ;
 
   //b.start(buf);

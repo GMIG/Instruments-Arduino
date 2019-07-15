@@ -16,6 +16,26 @@ int ExternalCommands::readTransport(char* result){
 
         if (transport->available() > 0) {
             String cmdStr = transport->receiveString();
+            /*int no = -1;
+            int pos[MAX_SYNTAX];
+            for(int i = 0; i < MAX_SYNTAX; i++)
+                pos[i] = no;
+
+            for(int i = 0; i < cmdStr.length(); i++)
+                for (int j = 0; j < MAX_SYNTAX; j++)
+                    if(cmdStr[i] == syntax[j])
+                        pos[j] = i;
+
+            int leftBracketPosition = pos[0];
+            int rightBracketPosition = pos[1];
+
+            int colonPosition = pos[2];
+            int parOpenPosition = pos[3];
+            int parClosePosition = pos[4];*/
+
+
+
+            
             int leftBracketPosition = cmdStr.indexOf('[');
             int rightBracketPosition = cmdStr.indexOf(']');
 
@@ -23,7 +43,7 @@ int ExternalCommands::readTransport(char* result){
             int parOpenPosition = cmdStr.indexOf('(');
             int parClosePosition = cmdStr.indexOf(')');
             int no = -1;
-
+            
             if ( colonPosition == no || parOpenPosition == no || parClosePosition == no ||  // any of the required fields is missing
                     (leftBracketPosition == no && rightBracketPosition != no) ||            // only right bracket
                     (leftBracketPosition != no && rightBracketPosition == no)) {           // only left bracket
@@ -44,7 +64,7 @@ int ExternalCommands::readTransport(char* result){
             String paramString = cmdStr.substring(parOpenPosition + 1,parClosePosition);
             // blocking here
             for (int i = 0; i < senses.getSize() ;i++) {
-                Sense* s = senses.getPointer(i);
+                Commandable* s = senses.getPointer(i);
                 if(strcmp(s->namec(),senseString.c_str()) == 0){
                     char commandResult[MAX_COMMAND_RESULT];
                     memset(commandResult, '\0', MAX_COMMAND_RESULT);

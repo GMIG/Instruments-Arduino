@@ -11,7 +11,8 @@ private:
 
 public:
     SerialTransport(HardwareSerial& _serialDriver): serialDriver(_serialDriver){
-        _serialDriver.begin(9600);
+        serialDriver.begin(57600);
+        serialDriver.setTimeout(100);
     }
 
     int sendString(const char* s){
