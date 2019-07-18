@@ -58,6 +58,7 @@ void setup() {
   //r.start(buf);
   //b2.start();
   disp.start(buf);
+  disp.runall(buf);
 }
 
 void loop() {

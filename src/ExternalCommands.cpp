@@ -16,26 +16,7 @@ int ExternalCommands::readTransport(char* result){
 
         if (transport->available() > 0) {
             String cmdStr = transport->receiveString();
-            /*int no = -1;
-            int pos[MAX_SYNTAX];
-            for(int i = 0; i < MAX_SYNTAX; i++)
-                pos[i] = no;
-
-            for(int i = 0; i < cmdStr.length(); i++)
-                for (int j = 0; j < MAX_SYNTAX; j++)
-                    if(cmdStr[i] == syntax[j])
-                        pos[j] = i;
-
-            int leftBracketPosition = pos[0];
-            int rightBracketPosition = pos[1];
-
-            int colonPosition = pos[2];
-            int parOpenPosition = pos[3];
-            int parClosePosition = pos[4];*/
-
-
-
-            
+         
             int leftBracketPosition = cmdStr.indexOf('[');
             int rightBracketPosition = cmdStr.indexOf(']');
 

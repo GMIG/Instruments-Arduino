@@ -77,6 +77,8 @@ public:
         unsigned int d = strtoul(arg, &err, 10);
         if (*err != 0 ) 
             return 1; 
+        if  ( d >= senses.getSize()) 
+            return 2; 
         strlcat(result,senses.getPointer(d)->namec(),MAX_SENSE_RESULT);
         return 0;
     }
