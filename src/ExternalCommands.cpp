@@ -16,7 +16,7 @@ int ExternalCommands::readTransport(char* result){
 
         if (transport->available() > 0) {
             String cmdStr = transport->receiveString();
-         
+            //Serial.println(cmdStr);
             int leftBracketPosition = cmdStr.indexOf('[');
             int rightBracketPosition = cmdStr.indexOf(']');
 

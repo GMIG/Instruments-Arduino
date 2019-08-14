@@ -30,7 +30,7 @@ public:
     }
 
     String receiveString(){
-        return serialDriver.readString();
+        return serialDriver.readStringUntil('\n');
     }
 
 

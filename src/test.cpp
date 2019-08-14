@@ -18,7 +18,7 @@
 Scheduler scheduler;
 SerialTransport transport(Serial); 
 
-const int NUM_OF_SENSES = 8;
+const int NUM_OF_SENSES = 6;
 //Presence s(5,"pres",&transport);
 //Presence s2(2,"pres2",&transport);
 //Presence s3(3,"pres3",&transport);
@@ -42,7 +42,7 @@ GPIOName GPIOS[] = {
 
 GPIOSwitch gpio("outs",GPIOS,3);
 
-Commandable* senses[NUM_OF_SENSES] = {&joy,&rot,&ang,&but,&but2,&but3,&but4,&gpio};//,&r,&r3,&r4,&b2,&b3,&s,&r}; 
+Commandable* senses[NUM_OF_SENSES] = {&joy,&rot,&ang,&but,&but4,&gpio};//,&r,&r3,&r4,&b2,&b3,&s,&r}; 
 
 //Sense* senses[2] = {&r3,&r}; 
 
@@ -59,6 +59,7 @@ void setup() {
   //b2.start();
   disp.start(buf);
   disp.runall(buf);
+  Serial.println("sys:1");
 }
 
 void loop() {
