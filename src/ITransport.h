@@ -9,7 +9,7 @@ public:
     virtual int sendLine(const char* s) = 0;
 
     virtual const int receiveChar() = 0;
-    virtual String receiveString() = 0;
+    virtual char* receiveString() = 0;
 
     virtual const int available() = 0;
 

@@ -1,0 +1,76 @@
+[editor]
+line_wrapping=false
+line_break_column=72
+auto_continue_multiline=true
+
+[file_prefs]
+final_new_line=true
+ensure_convert_new_lines=false
+strip_trailing_spaces=false
+replace_tabs=false
+
+[indentation]
+indent_width=4
+indent_type=1
+indent_hard_tab_width=8
+detect_indent=true
+detect_indent_width=true
+indent_mode=2
+
+[project]
+name=Arduino-Instruments
+base_path=/home/pi/Documents/Arduino/src/
+description=
+file_patterns=*.cpp;*.h;
+
+[long line marker]
+long_line_behaviour=1
+long_line_column=72
+
+[files]
+current_page=15
+FILE_NAME_0=436;C++;0;EUTF-8;0;1;0;%2Fhome%2Fpi%2FDocuments%2FArduino%2Fsrc%2FButton.h;0;4
+FILE_NAME_1=0;C++;0;EUTF-8;0;1;0;%2Fhome%2Fpi%2FDocuments%2FArduino%2Fsrc%2FCommand.h;0;4
+FILE_NAME_2=0;C++;0;EUTF-8;0;1;0;%2Fhome%2Fpi%2FDocuments%2FArduino%2Fsrc%2FCommandable.h;0;4
+FILE_NAME_3=0;C++;0;EUTF-8;0;1;0;%2Fhome%2Fpi%2FDocuments%2FArduino%2Fsrc%2FDebug.h;0;4
+FILE_NAME_4=650;C++;0;EUTF-8;0;1;0;%2Fhome%2Fpi%2FDocuments%2FArduino%2Fsrc%2FExternalCommands.cpp;0;4
+FILE_NAME_5=0;C++;0;EUTF-8;0;1;0;%2Fhome%2Fpi%2FDocuments%2FArduino%2Fsrc%2FExternalCommands.h;0;4
+FILE_NAME_6=0;C++;0;EUTF-8;0;1;0;%2Fhome%2Fpi%2FDocuments%2FArduino%2Fsrc%2FGPIOSwitch.h;0;4
+FILE_NAME_7=0;C++;0;EUTF-8;0;1;0;%2Fhome%2Fpi%2FDocuments%2FArduino%2Fsrc%2FITransport.h;0;4
+FILE_NAME_8=0;C++;0;EUTF-8;0;1;0;%2Fhome%2Fpi%2FDocuments%2FArduino%2Fsrc%2FPointerStorage.h;0;4
+FILE_NAME_9=0;C++;0;EUTF-8;0;1;0;%2Fhome%2Fpi%2FDocuments%2FArduino%2Fsrc%2FPresence.h;0;4
+FILE_NAME_10=0;C++;0;EUTF-8;0;1;0;%2Fhome%2Fpi%2FDocuments%2FArduino%2Fsrc%2FRotation.cpp;0;4
+FILE_NAME_11=0;C++;0;EUTF-8;0;1;0;%2Fhome%2Fpi%2FDocuments%2FArduino%2Fsrc%2FRotation.h;0;4
+FILE_NAME_12=180;C++;0;EUTF-8;0;1;0;%2Fhome%2Fpi%2FDocuments%2FArduino%2Fsrc%2FSense.cpp;0;4
+FILE_NAME_13=0;C++;0;EUTF-8;0;1;0;%2Fhome%2Fpi%2FDocuments%2FArduino%2Fsrc%2FSense.h;0;4
+FILE_NAME_14=0;C++;0;EUTF-8;1;1;0;%2Fhome%2Fpi%2FDocuments%2FArduino%2Fsrc%2FSerialTransport.cpp;0;4
+FILE_NAME_15=661;C++;0;EUTF-8;0;1;0;%2Fhome%2Fpi%2FDocuments%2FArduino%2Fsrc%2FSerialTransport.h;0;4
+FILE_NAME_16=0;C++;0;EUTF-8;0;1;0;%2Fhome%2Fpi%2FDocuments%2FArduino%2Fsrc%2Ftest.cpp;0;2
+FILE_NAME_17=0;Conf;0;EUTF-8;0;1;0;%2Fhome%2Fpi%2FDocuments%2FArduino%2Fplatformio.ini;0;2
+
+[VTE]
+last_dir=/home/pi/Documents/SchoolExhibit
+
+[build-menu]
+C++FT_01_LB=_Build
+C++FT_01_CM=cd ~/Documents/Arduino && pio run -t upload
+C++FT_01_WD=
+filetypes=C++;Conf;
+NF_00_LB=
+NF_00_CM=make
+NF_00_WD=
+ConfFT_01_LB=Build
+ConfFT_01_CM=pio run
+ConfFT_01_WD=
+EX_00_LB=
+EX_00_CM=cd ~/Documents/Arduino && pio -t upload
+EX_00_WD=
+C++FT_00_LB=_Compile
+C++FT_00_CM=cd ~/Documents/Arduino && pio run
+C++FT_00_WD=
+NF_01_LB=
+NF_01_CM=make 
+NF_01_WD=
+NF_02_LB=
+NF_02_CM=make %e.o
+NF_02_WD=
