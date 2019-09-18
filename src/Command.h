@@ -1,7 +1,7 @@
 #ifndef COMMAND_H
 #define COMMAND_H
 
-#define MAX_COMMAND_RESULT 30
+#define MAX_COMMAND_RESULT 20
 
 class Command
 {

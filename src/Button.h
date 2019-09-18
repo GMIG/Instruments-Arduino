@@ -23,10 +23,11 @@ protected:
     }
 
 public:
-    Button(int _pin,const char * name,ITransport* transport): 
+    Button(int _pin,const char * name,ITransport* transport, bool pullup = true): 
                             Sense(transport, name){
         pin = _pin;
-        pinMode(pin, INPUT_PULLUP);
+        if(pullup)
+            pinMode(pin, INPUT_PULLUP);
         currentState = digitalRead(pin);
         lastState = currentState;
     }
