@@ -12,22 +12,24 @@ class Rotation: public Sense
 private:
     int pin;
     Task taskGetData;
-    int value1;
-    bool changed;
+    int oldVal;
+    int newVal;
     float alphaval;
     int threshold;
 
 protected:
     int getDataString(char * result){ 
-        short out = value1;
+        short out = newVal;
         if (threshold)
-            out = value1 > threshold;
+            out = newVal > threshold;
 
         sprintf(result, "%d", out);
         return 0;
     }
     bool hasDataToSend(){
-        return changed;
+        bool res = newVal != oldVal;
+        oldVal = newVal;
+        return res;
     }
 
     SETUPARGCOMMAND(alpha,Rotation);
@@ -43,10 +45,11 @@ public:
         pin = _pin;
         commands.addPointer(&alphaCommand);
         commands.addPointer(&thrCommand);
-        changed = false;
         alphaval = 0.1f;
         taskGetData.setLtsPointer(this);
-        threshold = 0;        
+        threshold = 0;  
+        oldVal = analogRead(pin);
+        newVal = oldVal;   
 
     }
 
@@ -59,7 +62,6 @@ public:
         return 0;
     }
 
-
     int alpha(const char*  arg, char* result){
         char *err;
         float d = strtod(arg, &err);
@@ -68,17 +70,9 @@ public:
         alphaval = d;
         return 0;
     }
+    
     void readValue(){
-        int filtered = (1-alphaval)*analogRead(pin) + alphaval*value1;
-
-        if(filtered != value1){
-            changed = true;
-            value1 = filtered;
-        }
-        else
-            changed = false;
-
-
+        newVal = (1-alphaval)*analogRead(pin) + alphaval*oldVal;
     }
 
 

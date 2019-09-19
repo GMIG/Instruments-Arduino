@@ -10,7 +10,17 @@
 #define O4 5
 #define O5 3
 #define MAX_GPIOS
+#define ON 255
 
+ptrdiff_t index_of1(char *string, char search) {
+    const char *moved_string = strchr(string, search);
+    /* If not null, return the difference. */
+    if (moved_string) {
+        return moved_string - string;
+    }
+    /* Character not found. */
+    return -1;
+}
 
 
 struct GPIOName{
@@ -24,6 +34,7 @@ class GPIOSwitch: public Commandable{
 public:
     SETUPARGCOMMAND(allOn,GPIOSwitch);
     SETUPARGCOMMAND(allOff,GPIOSwitch);
+    SETUPARGCOMMAND(set,GPIOSwitch);
 
     SETUPARGCOMMAND(on,GPIOSwitch);
     SETUPARGCOMMAND(off,GPIOSwitch);
@@ -35,13 +46,16 @@ public:
                                         INITCOMMAND(on),
                                         INITCOMMAND(off),
                                         INITCOMMAND(allOn),
-                                        INITCOMMAND(allOff){   
+                                        INITCOMMAND(allOff),
+                                        INITCOMMAND(set)
+                                        {   
+        ADDCOMMAND(set);
         ADDCOMMAND(on);
         ADDCOMMAND(off);
         ADDCOMMAND(allOn);
         ADDCOMMAND(allOff);
         for (size_t i = 0; i < num_of_GPIO; i++)
-            pinMode(GPIOs[i].GPIOnum, INPUT);
+            pinMode(GPIOs[i].GPIOnum, OUTPUT);
     }
 
     uint8_t getNum(const char* name){
@@ -67,7 +81,24 @@ public:
 
 
     int on(const char* arg, char * result){
-        return switcher(arg, HIGH);    
+        return switcher(arg, ON);    
+    }
+
+    char name[10];
+    char val[5];
+    int set(const char* arg, char * result){
+        int commaPosition = index_of1(arg,',');
+        strncpy(name, arg, commaPosition);
+        strncpy(val, arg + commaPosition + 1, strlen(arg) - commaPosition - 1);
+        uint8_t pin = getNum(name);
+        if (pin == 255) 
+            return 1; 
+        char *err;
+        unsigned int d = strtoul(val, &err, 5);
+        if (*err != 0 ) 
+            return 1; 
+        analogWrite(pin,d);
+        return 0;    
     }
 
     int off(const char* arg, char * result){
@@ -75,7 +106,7 @@ public:
     }
 
     int allOn(const char* arg, char * result){
-        return allSwitch(HIGH);    
+        return allSwitch(ON);    
     }
 
     int allOff(const char* arg, char * result){

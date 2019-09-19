@@ -31,7 +31,7 @@ protected:
 public:
     Encoder(int _pin,const char * name,ITransport* transport): 
                             Sense(transport, name),
-                            taskGetData(5, TASK_FOREVER, &encoderGetCallback, &scheduler, true),
+                            taskGetData(10, TASK_FOREVER, &encoderGetCallback, &scheduler, true),
                             dtreadCommand(*this)
                             {
         pin = _pin;

@@ -36,7 +36,7 @@ public:
 
     Sense(ITransport* transport, const char *__name):
                 Commandable(__name),
-                taskSendData(50, TASK_FOREVER, &sendCallback, &scheduler, false)//,
+                taskSendData(10, TASK_FOREVER, &sendCallback, &scheduler, false)//,
                 //startCommand(*this),
                 //stopCommand(*this),
                 //isCommand(*this),

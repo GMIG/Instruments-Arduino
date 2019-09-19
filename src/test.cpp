@@ -5,144 +5,76 @@
 
 #include <Arduino.h>
 #include <TaskScheduler.h>
+#include "GPIOSwitch.h"
+#include "ExternalCommands.h"
+#include "SerialTransport.h"
+#include "Encoder.h"
+#include "Trigger.h"
+#include "Rotation.h"
 
-class Trigger{
-private:
-  char* name;
-  int pin;
-  bool lastState;
-  bool currentState;
-  bool change;
+//#define TESTUNO 1
+#define TEST 1
 
-public:
-    Trigger(int _pin,const char * _name, bool pullup = true){ 
-        pin = _pin;
-        name = _name;
-        if(pullup)
-            pinMode(pin, INPUT_PULLUP);
-        currentState = digitalRead(pin);
-        lastState = currentState;
-    }
-        
-    void loop(){                
-      currentState = digitalRead(pin);
-      if(lastState != currentState){
-        Serial.print(name);
-        Serial.print(":");
-        Serial.println(currentState);
-        lastState = currentState;
-      }
-    }
-};
+
 
 const int NUM_OF_SENSES = 13;
-Trigger shl(22,"shl",false);
-Trigger vkl(24,"vkl");
-Trigger bol(26,"bol");
-Trigger bor(28,"bor");
-Trigger alb(30,"alb");
-Trigger bin(32,"bin",false);
-
-//Trigger vol(34,"vol");
-
-Trigger rin(36,"rin");
-
-Trigger box(38,"box");
-Trigger tel(40,"tel");
-Trigger fot(42,"fot");
-Trigger kom(44,"kom",false);
-Trigger lif(46,"lif");
-Trigger fan(48,"fan");
+Trigger shl(22,"shl",false); Trigger vkl(24,"vkl");      
+Trigger bol(26,"bol");       Trigger bor(28,"bor");
+Trigger alb(30,"alb");       Trigger bin(32,"bin",false);
+#ifdef TEST
+  Trigger rin(A3,"rin");
+#else
+  Trigger rin(36,"rin");
+#endif
+Trigger box(38,"box"); Trigger tel(40,"tel"); 
+Trigger fot(42,"fot"); Trigger kom(23,"kom",false);
+Trigger lif(25,"lif"); Trigger fan(27,"fan");
 
 Trigger* senses[NUM_OF_SENSES] = {&shl,&vkl,&bol,&bor,&alb,&bin,&rin,&box,&kom,&tel,&lif,&fot,&fan};
 
-
-//Rotation rad(A2,"rad",&transport);
-
-
-/*
-#include "Presence.h"
-#include "Rotation.h"
-#include "Debug.h"
-#include "Button.h"
-#include "GPIOSwitch.h"
-#include "Encoder.h"
-
-#include "SerialTransport.h"
-#include "ExternalCommands.h"
-
-Scheduler scheduler;
-SerialTransport transport(Serial); 
-
-const int NUM_OF_SENSES = 16;
-Button shl(22,"shl",&transport,false);
-Button vkl(24,"vkl",&transport);
-Button bol(26,"bol",&transport);
-Button bor(28,"bor",&transport);
-Button alb(30,"alb",&transport);
-Button bin(32,"bin",&transport,false);
-
-Encoder vol(34,"vol",&transport);
-
-Button rin(36,"rin",&transport);
-
-Button box(38,"box",&transport);
-Button bil(40,"bil",&transport);
-Button tel(42,"tel",&transport);
-Button lif(44,"lif",&transport);
-Button fot(46,"fot",&transport);
-Button plc(44,"plc",&transport);
-
-Rotation rad(A2,"rad",&transport);
-
-
+//2 - 13, 44 - 46
 GPIOName GPIOS[] = {
-  {23,"lshl"}, {25,"lvkl"}, {27,"lbo"}, {31,"lalb"}, {33,"lbin"},
-  {35,"lvol"}, {37,"lrin"}, {39,"lbox"}, {41,"lbil"}, {43,"ltel"},
-  {45,"llif"}, {47,"lfot"}, {49,"lplc"},
-  
-  {51,"lrad"},
-  {53,"lscr"},
+    {2,"shl"}, {3,"vkl"},
+    {4,"bo"}, 
+    {5,"alb"}, {6,"bin"},
+    {7,"rin"},
+    {8,"box"}, {9,"tel"},
+    {10,"fot"}, {11,"kom"},
+    {12,"lif"}, {13,"fan"},  
+    {44,"vol"}, {45,"sig"},  
+    {46,"rad"}
 };
+Scheduler scheduler;
 
 GPIOSwitch gpio("outs",GPIOS,15);
+SerialTransport transport(Serial); 
 
-Commandable* senses[NUM_OF_SENSES] = {&shl,&vkl,&bol,&bor,&alb,&bin,&vol,&rin,&box,&bil,&tel,&lif,&fot,&plc,&rad,&gpio};
+Encoder vol(A0,"vol",&transport);
+Rotation rad(A1,"rad",&transport);
 
-ExternalCommands disp("cmd",&transport,senses,NUM_OF_SENSES);
-*/
-Scheduler scheduler;
+Commandable* coms[3] = {&gpio,&vol,&rad};//,&r,&r3,&r4,&b2,&b3,&s,&r}; 
+ExternalCommands disp("cmd",&transport,coms,3);
+
 
 bool prevVal = 1;
 
-void cb(){
-  bool val = digitalRead(34) ;
-        if(val != prevVal){
-          Serial.println("vol:1");
-          prevVal = val;
-        }
-}
-
-Task taskGetData(10, TASK_FOREVER, &cb, &scheduler, true);
-
-
+  #ifndef TEST
+    int volPin = 34;
+  #else
+    int volPin = A0;
+  #endif
 void setup() {
   Serial.begin(57600);
-  char buf[1] ;
-  //vol.dtread("10","");
-  //vol.dt("10","");
-  //disp.start(buf);
-  //disp.runall(buf);
-
   Serial.println("sys:1");
 }
 
 void loop() {
-	//debugHandle();
-  for (int i=0 ;i<NUM_OF_SENSES;i++)
+  #ifndef TESTUNO
+  for (int i=0 ;i < NUM_OF_SENSES;i++)
     senses[i]->loop();
-  // put your main code here, to run repeatedly:
-  //s.sendAll();
+  #else
+    rin.loop();
+  #endif
   scheduler.execute();
 
 }
