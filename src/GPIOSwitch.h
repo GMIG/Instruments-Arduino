@@ -89,12 +89,13 @@ public:
     int set(const char* arg, char * result){
         int commaPosition = index_of1(arg,',');
         strncpy(name, arg, commaPosition);
+        memset(val, '\0', 5);
         strncpy(val, arg + commaPosition + 1, strlen(arg) - commaPosition - 1);
         uint8_t pin = getNum(name);
         if (pin == 255) 
             return 1; 
         char *err;
-        unsigned int d = strtoul(val, &err, 5);
+        unsigned int d = strtoul(val, &err, 10);
         if (*err != 0 ) 
             return 1; 
         analogWrite(pin,d);

@@ -12,7 +12,7 @@
 #include "Trigger.h"
 #include "Rotation.h"
 
-//#define TESTUNO 1
+#define TESTUNO 1
 #define TEST 1
 
 
@@ -49,11 +49,13 @@ Scheduler scheduler;
 GPIOSwitch gpio("outs",GPIOS,15);
 SerialTransport transport(Serial); 
 
-Encoder vol(A0,"vol",&transport);
-Rotation rad(A1,"rad",&transport);
+//Encoder vol(A0,"vol",&transport);
+//Rotation rad(A1,"rad",&transport);
 
-Commandable* coms[3] = {&gpio,&vol,&rad};//,&r,&r3,&r4,&b2,&b3,&s,&r}; 
-ExternalCommands disp("cmd",&transport,coms,3);
+//Commandable* coms[3] = {&gpio,&vol,&rad};//,&r,&r3,&r4,&b2,&b3,&s,&r}; 
+//ExternalCommands disp("cmd",&transport,coms,3);
+Commandable* coms[1] = {&gpio};//,&r,&r3,&r4,&b2,&b3,&s,&r}; 
+ExternalCommands disp("cmd",&transport,coms,1);
 
 
 bool prevVal = 1;
