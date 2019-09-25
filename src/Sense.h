@@ -29,24 +29,24 @@ private:
     PointerStorage<ITransport> transports;
     Task taskSendData;
 public:
-    //SETUPCOMMAND(stop,Sense);
-    //SETUPCOMMAND(start,Sense);
+    SETUPCOMMAND(stop,Sense);
+    SETUPCOMMAND(start,Sense);
     //SETUPCOMMAND(is,Sense);
-    //SETUPARGCOMMAND(dt,Sense);
+    SETUPARGCOMMAND(dt,Sense);
 
     Sense(ITransport* transport, const char *__name):
                 Commandable(__name),
-                taskSendData(10, TASK_FOREVER, &sendCallback, &scheduler, false)//,
-                //startCommand(*this),
-                //stopCommand(*this),
+                taskSendData(20, TASK_FOREVER, &sendCallback, &scheduler, false),
+                startCommand(*this),
+                stopCommand(*this),
                 //isCommand(*this),
-                //dtCommand(*this)
+                dtCommand(*this)
         {
         transports.addPointer(transport);
-        //commands.addPointer(&stopCommand);
-        //commands.addPointer(&startCommand);
+        commands.addPointer(&stopCommand);
+        commands.addPointer(&startCommand);
         //commands.addPointer(&isCommand);
-        //commands.addPointer(&dtCommand);
+        commands.addPointer(&dtCommand);
         taskSendData.setLtsPointer(this);
         taskSendData.enable();
     }
@@ -64,14 +64,14 @@ public:
 
             }
     }
-    /*int dt(const char* arg, char * result){
+    int dt(const char* arg, char * result){
         char *err;
         unsigned int d = strtoul(arg, &err, 10);
         if (*err != 0 ) 
             return 1; 
         taskSendData.setInterval(d);
         return 0;
-    }*/
+    }
 
 
 
@@ -79,15 +79,15 @@ public:
         sprintf(result,"%d", taskSendData.isEnabled());        
         return 0;
     }*/
-/*
+
     int stop(char * result){
         return !taskSendData.disable();
     }
-*//*
+
     int start(char * result){
         taskSendData.enable();
         return 0;
-    }*/
+    }
 
 };
 

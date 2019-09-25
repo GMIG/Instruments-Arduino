@@ -53,10 +53,11 @@ public:
         ADDCOMMAND(stopall);
         ADDCOMMAND(getObj);
         ADDCOMMAND(getNumObj);
-
-        for(int i = 0;i < numOfSenses;i++)
-            senses.addPointer(_senses[i]);
         senses.addPointer(this);
+
+        for(int i = 0;i < numOfSenses;i++){
+            senses.addPointer(_senses[i]);
+        }
         //taskGetData.setLtsPointer(this);
     }
     

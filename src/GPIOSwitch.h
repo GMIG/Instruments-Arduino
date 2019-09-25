@@ -34,6 +34,9 @@ class GPIOSwitch: public Commandable{
 public:
     SETUPARGCOMMAND(allOn,GPIOSwitch);
     SETUPARGCOMMAND(allOff,GPIOSwitch);
+    SETUPARGCOMMAND(allSet,GPIOSwitch);
+
+    
     SETUPARGCOMMAND(set,GPIOSwitch);
 
     SETUPARGCOMMAND(on,GPIOSwitch);
@@ -47,13 +50,16 @@ public:
                                         INITCOMMAND(off),
                                         INITCOMMAND(allOn),
                                         INITCOMMAND(allOff),
-                                        INITCOMMAND(set)
+                                        INITCOMMAND(set),
+                                        INITCOMMAND(allSet)
                                         {   
         ADDCOMMAND(set);
         ADDCOMMAND(on);
         ADDCOMMAND(off);
         ADDCOMMAND(allOn);
         ADDCOMMAND(allOff);
+        ADDCOMMAND(allSet);
+
         for (size_t i = 0; i < num_of_GPIO; i++)
             pinMode(GPIOs[i].GPIOnum, OUTPUT);
     }
@@ -112,6 +118,18 @@ public:
 
     int allOff(const char* arg, char * result){
         return allSwitch(LOW);    
+    }
+
+    int allSet(const char* arg, char * result){
+        int res = 0;
+        char *err;
+
+        unsigned int d = strtoul(arg, &err, 10);
+        if (*err != 0 ) 
+            return 1; 
+        for (size_t i = 0; i < num_of_GPIO; i++)
+            analogWrite(GPIOs[i].GPIOnum,d);
+        return res;
     }
 
 

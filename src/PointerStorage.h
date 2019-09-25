@@ -1,7 +1,7 @@
 #ifndef POINTER_STORAGE_H
 #define POINTER_STORAGE_H
 
-#define MAX_CAPACITY 10
+#define MAX_CAPACITY 100
 #define INITIAL_CAPACITY 1
 #include <stdlib.h>
 

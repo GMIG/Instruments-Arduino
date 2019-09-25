@@ -27,7 +27,7 @@ protected:
         return 0;
     }
     bool hasDataToSend(){
-        bool res = newVal != oldVal;
+        bool res = (newVal != oldVal) && abs(newVal - oldVal) > 2;
         oldVal = newVal;
         return res;
     }

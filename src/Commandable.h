@@ -55,7 +55,7 @@ public:
         return this->_name;
     }
 
-    SETUPARGCOMMAND(list,Commandable);
+    //SETUPARGCOMMAND(list,Commandable);
 
     int decodeCommand(const char* cmd,const char* arg, char* result){
         for(short i = 0; i < commands.getSize() ; i++){
@@ -66,7 +66,7 @@ public:
         }
         return COMMAND_NOT_FOUND;
     }
-    int list(const char* arg, char * result){
+    /*int list(const char* arg, char * result){
         for(short i = 0; i < commands.getSize() ; i++){
             const char* senseCmd = commands.getPointer(i)->name();
             strlcat(result,senseCmd,MAX_COMMAND_RESULT);
@@ -74,11 +74,12 @@ public:
 
         }
         return 0;
-    }
+    }*/
 
-    Commandable(const char *__name):_name(__name),
-                    INITCOMMAND(list){
-        ADDCOMMAND(list);
+    Commandable(const char *__name)//,
+                    //INITCOMMAND(list)
+                    {_name = __name;
+        //ADDCOMMAND(list);
     };
 
 };
