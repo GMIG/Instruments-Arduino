@@ -11,7 +11,7 @@
 #include "Trigger.h"
 #include "Rotation.h"
 
-#define TEST 1
+//#define TEST 1
 
 SerialTransport transport(Serial); 
 Scheduler scheduler;
@@ -30,13 +30,15 @@ Scheduler scheduler;
   Commandable* senses[NUM_OF_SENSES] = {&vol,&rad,&rin,&vkl,&gpio};
 
 #else
-  const int NUM_OF_SENSES = 16;
+  const int NUM_OF_SENSES = 17;
   Trigger shl(22,"shl",&transport,false); Trigger vkl(23,"vkl",&transport);      
   Trigger bol(24,"bol",&transport);       Trigger bor(25,"bor",&transport);
   Trigger alb(26,"alb",&transport);       Trigger bin(27,"bin",&transport,false);
   Encoder vol(28,"vol",&transport);
   Trigger rin(29,"rin",&transport);
   Rotation rad(A15,"rad",&transport);
+  Rotation ref(A7,"ref",&transport);
+
   Trigger box(30,"box",&transport); Trigger tel(31,"tel",&transport); 
   Trigger fot(32,"fot",&transport); Trigger kom(33,"kom",&transport,false);
   Trigger lif(34,"lif",&transport); Trigger fan(35,"fan",&transport);
@@ -54,7 +56,7 @@ Scheduler scheduler;
   };
 
   GPIOSwitch gpio("outs",GPIOS,NUM_OF_GPIOS);
-  Commandable* senses[NUM_OF_SENSES] = {&shl,&vkl,&bol,&bor,&alb,&bin,&rin,&box,&kom,&tel,&lif,&fot,&fan,&gpio,&vol,&rad};
+  Commandable* senses[NUM_OF_SENSES] = {&shl,&vkl,&bol,&bor,&alb,&bin,&rin,&box,&kom,&tel,&lif,&fot,&fan,&gpio,&vol,&rad,&ref};
 #endif
 
 ExternalCommands disp("cmd",&transport,senses,NUM_OF_SENSES);

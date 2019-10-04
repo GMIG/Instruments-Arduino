@@ -24,11 +24,12 @@ protected:
             out = newVal > threshold;
 
         sprintf(result, "%d", out);
+        oldVal = newVal;
+
         return 0;
     }
     bool hasDataToSend(){
-        bool res = (newVal != oldVal) && abs(newVal - oldVal) > 2;
-        oldVal = newVal;
+        bool res = (abs(newVal - oldVal) > 10);
         return res;
     }
 
@@ -38,14 +39,14 @@ protected:
 public:
     Rotation(int _pin,const char * name,ITransport* transport): 
                             Sense(transport, name),
-                            taskGetData(10, TASK_FOREVER, &rotationGetCallback, &scheduler, true),
+                            taskGetData(20, TASK_FOREVER, &rotationGetCallback, &scheduler, true),
                             alphaCommand(*this),
                             thrCommand(*this)
                             {
         pin = _pin;
         commands.addPointer(&alphaCommand);
         commands.addPointer(&thrCommand);
-        alphaval = 0.1f;
+        alphaval = 0.0f;
         taskGetData.setLtsPointer(this);
         threshold = 0;  
         oldVal = analogRead(pin);
