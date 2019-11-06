@@ -4,12 +4,14 @@
 
 #include <Arduino.h>
 #include <TaskScheduler.h>
-#include "GPIOSwitch.h"
 #include "ExternalCommands.h"
 #include "SerialTransport.h"
 #include "Encoder.h"
 #include "Trigger.h"
+#include "Sonar.h"
+
 #include "Rotation.h"
+#include "GPIOSwitch.h"
 
 //#define TEST 1
 
@@ -30,17 +32,17 @@ Scheduler scheduler;
   Commandable* senses[NUM_OF_SENSES] = {&vol,&rad,&rin,&vkl,&gpio};
 
 #else
-  const int NUM_OF_SENSES = 17;
-  Trigger shl(22,"shl",&transport,false); Trigger vkl(23,"vkl",&transport);      
+  const int NUM_OF_SENSES = 16;
+  Sonar shl(22,36,"shl",&transport,false); 
+  Trigger vkl(23,"vkl",&transport);      
   Trigger bol(24,"bol",&transport);       Trigger bor(25,"bor",&transport);
   Trigger alb(26,"alb",&transport);       Trigger bin(27,"bin",&transport,false);
   Encoder vol(28,"vol",&transport);
   Trigger rin(29,"rin",&transport);
   Rotation rad(A15,"rad",&transport);
-  Rotation ref(A7,"ref",&transport);
 
   Trigger box(30,"box",&transport); Trigger tel(31,"tel",&transport); 
-  Trigger fot(32,"fot",&transport); Trigger kom(33,"kom",&transport,false);
+  Trigger fot(32,"fot",&transport); Sonar kom(33,38,"kom",&transport,false);
   Trigger lif(34,"lif",&transport); Trigger fan(35,"fan",&transport);
   const int NUM_OF_GPIOS = 15;
   GPIOName GPIOS[NUM_OF_GPIOS] = {
@@ -56,14 +58,14 @@ Scheduler scheduler;
   };
 
   GPIOSwitch gpio("outs",GPIOS,NUM_OF_GPIOS);
-  Commandable* senses[NUM_OF_SENSES] = {&shl,&vkl,&bol,&bor,&alb,&bin,&rin,&box,&kom,&tel,&lif,&fot,&fan,&gpio,&vol,&rad,&ref};
+  Commandable* senses[NUM_OF_SENSES] = {&shl,&vkl,&bol,&bor,&alb,&bin,&rin,&box,&kom,&tel,&lif,&fot,&fan,&gpio,&vol,&rad};
 #endif
 
 ExternalCommands disp("cmd",&transport,senses,NUM_OF_SENSES);
 
 void setup() {
-  Serial.begin(57600);
-  delay(2000);
+  Serial.begin(115200);
+  delay(3000);
   Serial.println("sys:1");
 //          for(int i = 0;i < NUM_OF_SENSES + 1;i++){
 //           Serial.println(senses[i]->namec());
